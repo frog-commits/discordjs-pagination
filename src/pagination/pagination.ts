@@ -229,7 +229,9 @@ export const pagination = async (options: PaginationOptions) => {
                         console.log(`Webhook token has expired : ${client ? "trying to delete embed from it's id..." : "no client found in option, cannot delete embed"}`);
                         if (client) {
                            client.channels.fetch(interaction.channelId).then(channel => {
-                              channel.messages.delete(initialMessage.id);
+                              if (channel.isTextBased()) {
+                                 channel.messages.delete(interaction.id);
+                              }
                            }).then(() => {
                               console.log(`Message with ${initialMessage.id} id has been deleted successfully.`);
                            }).catch(err => console.log(`Channel does not exist or other error has been raised :\n${err}`))
